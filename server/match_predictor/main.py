@@ -82,10 +82,8 @@ def get_X_y_2k18():
     X_2k18, y_2k18 = pd.DataFrame(columns=FEATURE_NAMES), []
 
     for match in matches2k18:
-        current_data = []
+        current_data = [team_name_encoder.transform([match.away])[0]]
 
-        # Away Team Name
-        current_data.append(team_name_encoder.transform([match.away])[0])
         # Home Team Name
         current_data.append(team_name_encoder.transform([match.home])[0])
 
@@ -104,17 +102,13 @@ def get_X_y_2k18():
         current_data.append(away_team_rank["cur_year_avg"])
         current_data.append(away_team_rank["cur_year_avg_weighted"])
 
-        # Avg Goals
-        avg_goals = get_average_goals(match.home, match.away, 2018)
-        if avg_goals:
+        if avg_goals := get_average_goals(match.home, match.away, 2018):
             # Home Avg Goals
             current_data.append(avg_goals[0])
             # Away Avg Goals
             current_data.append(avg_goals[1])
         else:
-            current_data.append(0.0)
-            current_data.append(0.0)
-
+            current_data.extend((0.0, 0.0))
         # Prepare data
         current_data = pd.Series(current_data, index=FEATURE_NAMES)
         if match.home_goals > match.away_goals:
@@ -143,10 +137,8 @@ def train():
 def predict_proba(home_team_name, away_team_name):
     train()
 
-    data = []
+    data = [team_name_encoder.transform([away_team_name])[0]]
 
-    # Away Team Name
-    data.append(team_name_encoder.transform([away_team_name])[0])
     # Home Team Name
     data.append(team_name_encoder.transform([home_team_name])[0])
 
@@ -165,17 +157,13 @@ def predict_proba(home_team_name, away_team_name):
     data.append(away_team_rank["cur_year_avg"])
     data.append(away_team_rank["cur_year_avg_weighted"])
 
-    # Avg Goals
-    avg_goals = get_average_goals(home_team_name, away_team_name, 2018)
-    if avg_goals:
+    if avg_goals := get_average_goals(home_team_name, away_team_name, 2018):
         # Home Avg Goals
         data.append(avg_goals[0])
         # Away Avg Goals
         data.append(avg_goals[1])
     else:
-        data.append(0.0)
-        data.append(0.0)
-
+        data.extend((0.0, 0.0))
     # Aggregate data
     df = pd.DataFrame(columns=FEATURE_NAMES)
     data = pd.Series(data, index=FEATURE_NAMES)

@@ -19,4 +19,4 @@ for team, country in zip(teams, country_codes.keys()):
     data[country] = players
 
 with open("constants.py", "a") as constants_file:
-    constants_file.write("data = {}".format(data.__repr__()))
+    constants_file.write(f"data = {data.__repr__()}")

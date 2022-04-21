@@ -39,27 +39,17 @@ def index():
 
                 final_matches.append(match)
 
-        return render_template(
-            "index.html", 
-            matches=final_matches,
-            enumerate=enumerate, 
-            country_codes=country_codes,
-            colors=colors,
-            dates=dates
-        )
-
     else:
         want_date = request.form["dates"]
         if want_date != "":
             want_date = want_date.split(".")
             get_date = datetime.date(2018, int(want_date[1]), int(want_date[0]))
 
+        elif datetime.date.today() >  datetime.date(2018, 6, 14):
+            get_date = datetime.date.today()
         else:
-            if datetime.date.today() >  datetime.date(2018, 6, 14):
-                get_date = datetime.date.today()
-            else:
-                get_date = datetime.date(2018, 6, 14)
-        
+            get_date = datetime.date(2018, 6, 14)
+
         for match in matches:
             if match.date >= datetime.date.today():      
                 if match.date.strftime("%d.%m.%Y") not in dates:
@@ -80,14 +70,15 @@ def index():
 
                     final_matches.append(match)
 
-        return render_template(
-            "index.html", 
-            matches=final_matches,
-            enumerate=enumerate, 
-            country_codes=country_codes,
-            colors=colors,
-            dates=dates
-        )
+
+    return render_template(
+        "index.html", 
+        matches=final_matches,
+        enumerate=enumerate, 
+        country_codes=country_codes,
+        colors=colors,
+        dates=dates
+    )
 
 @app.route('/en', methods=["GET", "POST"])
 def index_en():
@@ -115,27 +106,17 @@ def index_en():
 
                 final_matches.append(match)
 
-        return render_template(
-            "index_en.html", 
-            matches=final_matches,
-            enumerate=enumerate, 
-            country_codes=country_codes,
-            colors=colors,
-            dates=dates
-        )
-
     else:
         want_date = request.form["dates"]
         if want_date != "":
             want_date = want_date.split(".")
             get_date = datetime.date(2018, int(want_date[1]), int(want_date[0]))
 
+        elif datetime.date.today() >  datetime.date(2018, 6, 14):
+            get_date = datetime.date.today()
         else:
-            if datetime.date.today() >  datetime.date(2018, 6, 14):
-                get_date = datetime.date.today()
-            else:
-                get_date = datetime.date(2018, 6, 14)
-        
+            get_date = datetime.date(2018, 6, 14)
+
         for match in matches:
             if match.date >= datetime.date.today():       
                 if match.date.strftime("%d.%m.%Y") not in dates:
@@ -156,14 +137,15 @@ def index_en():
 
                     final_matches.append(match)
 
-        return render_template(
-            "index_en.html", 
-            matches=final_matches,
-            enumerate=enumerate, 
-            country_codes=country_codes,
-            colors=colors,
-            dates=dates
-        )
+
+    return render_template(
+        "index_en.html", 
+        matches=final_matches,
+        enumerate=enumerate, 
+        country_codes=country_codes,
+        colors=colors,
+        dates=dates
+    )
 
 @app.route('/past')
 def past():

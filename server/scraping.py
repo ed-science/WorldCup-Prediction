@@ -19,7 +19,7 @@ class Match:
         else:
             self.date = datetime.date.today()
         self.time = time
-        self.stage = "Group " + stage
+        self.stage = f"Group {stage}"
 
         self.prob_home = 0
         self.prob_away = 0
